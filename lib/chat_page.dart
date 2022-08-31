@@ -83,11 +83,13 @@ class _ChatPageState extends State<ChatPage> {
   /// チャット画面用のメッセージオブジェクトを作成します
   types.Message _createMessage(NCMBObject message) {
     // ユーザー情報とNCMBのメッセージから、ベースになる情報を作成
-    var user = message.get('user') as NCMBUser;
+    var user = message.get('user') == null
+        ? NCMBUser()
+        : message.get('user') as NCMBUser;
     var messageJson = {
       'author': {
         'id': user.objectId!,
-        'lastName': user.getString('displayName'),
+        'lastName': user.getString('displayName', defaultValue: '退会ユーザー'),
       },
       'id': message.objectId!,
       'createdAt': message
